@@ -1,0 +1,63 @@
+<head>
+<script type="text/javascript" src="http://www.google.com/jsapi">
+</script>
+
+<script type="text/javascript">
+google.load("feeds", "1") //Load Google Ajax Feed API (version 1)
+</script>
+</head>
+
+<% provide(:title, "News") %>
+<h1>Latest Soccer News</h1>
+<div id="feeddiv"></div>
+<div id="feeddiv2"></div>
+
+<script type="text/javascript">
+
+var feedcontainer=document.getElementById("feeddiv")
+var feedcontainer2=document.getElementById("feeddiv2")
+var feedurl="http://rss.slashdot.org/Slashdot/slashdot"
+var feedurl2="http://football365.com/arsenal/rss"
+var feedlimit=7
+var feedlimit2=7
+var rssoutput="<b>Latest Premier League News:</b><br /><ul>"
+var rssoutput2="<b>Latest La Liga News:</b><br /><ul>"
+
+function rssfeedsetup(){
+var feedpointer=new google.feeds.Feed(feedurl) //Google Feed API method
+var feedpointer2=new google.feeds.Feed(feedurl2) //Google Feed API method
+feedpointer.setNumEntries(feedlimit) //Google Feed API method
+feedpointer2.setNumEntries(feedlimit2) //Google Feed API method
+feedpointer.load(displayfeed) //Google Feed API method
+feedpointer2.load(displayfeed2) //Google Feed API method
+}
+
+function displayfeed(result){
+if (!result.error){
+var thefeeds=result.feed.entries
+for (var i=0; i<thefeeds.length; i++)
+rssoutput+="<li><a href='" + thefeeds[i].link + "'>" + thefeeds[i].title + "</a></li>"
+rssoutput+="</ul>"
+feedcontainer.innerHTML=rssoutput
+}
+else
+alert("Error fetching feeds!")
+}
+
+function displayfeed2(result){
+if (!result.error){
+var thefeeds=result.feed.entries
+for (var i=0; i<thefeeds.length; i++)
+rssoutput2+="<li><a href='" + thefeeds[i].link + "'>" + thefeeds[i].title + "</a></li>"
+rssoutput2+="</ul>"
+feedcontainer2.innerHTML=rssoutput2
+}
+else
+alert("Error fetching feeds!")
+}
+
+window.onload=function(){
+rssfeedsetup()
+}
+
+</script>
